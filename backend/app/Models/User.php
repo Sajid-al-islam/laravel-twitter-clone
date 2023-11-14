@@ -40,13 +40,19 @@ class User extends Authenticatable
         }
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(UserRole::class, 'user_user_role', 'user_id', 'user_role_id', 'id', 'role_serial');
+    public function tweets() {
+        return $this->hasMany(Tweet::class);
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany(UserPermission::class, 'user_user_permission', 'user_id', 'user_permission_id', 'id', 'permission_serial'); //user::id
+    public function likes() {
+        return $this->hasMany(Like::class);
+    }
+
+    public function followers() {
+        return $this->hasMany(Follower::class, 'followed_id');
+    }
+
+    public function following() {
+        return $this->hasMany(Follower::class, 'follower_id');
     }
 }

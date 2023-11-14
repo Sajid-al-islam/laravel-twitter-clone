@@ -78,7 +78,7 @@ class ApiLoginController extends Controller
 
                 if (env('EMAIL_VERIFICATION') == false) {
                     auth()->login($check_auth_user, $request->remember);
-                    $user = User::where('id', Auth::user()->id)->first();
+                    $user = User::where('id', Auth::user()->id)->with(['followers', 'following'])->first();
                     $data['access_token'] = $user->createToken('accessToken')->accessToken;
                     $data['user'] = $user;
                     return response()->json($data, 200);
@@ -150,7 +150,7 @@ class ApiLoginController extends Controller
         if (strlen($old_password)) {
             if (Hash::check($old_password, $user->password)) {
                 if (strlen($newpassword) && strlen($newpassword_confirmation)) {
-                    
+
 
                     $user->password = Hash::make($request->newpassword);
                 }
@@ -160,7 +160,7 @@ class ApiLoginController extends Controller
                     'data' => [
                         'old_password' => ['your given old password not matching'],
                     ],
-                    
+
                 ], 422);
             }
         }
@@ -373,7 +373,7 @@ class ApiLoginController extends Controller
             $auth_status = true;
             $auth_information = User::where('id',Auth::user()->id)
                 ->with([
-                    
+
                 ])
                 ->first();
         }

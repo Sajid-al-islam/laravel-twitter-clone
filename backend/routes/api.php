@@ -49,7 +49,7 @@ Route::group(
             });
 
             Route::group(['prefix' => 'tweet'], function () {
-                Route::get('/all','Auth\UserController@all');
+                Route::get('/all','TweetController@all');
                 Route::get('/{id}','Auth\UserController@show');
                 Route::post('/store','Auth\UserController@store');
                 Route::post('/update','Auth\UserController@update');
