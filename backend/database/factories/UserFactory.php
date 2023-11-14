@@ -26,12 +26,12 @@ class UserFactory extends Factory
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName,
-            'user_name' => $this->faker->name(),
+            'user_name' => $this->faker->firstName() . '_' . $this->faker->lastName,
             'mobile_number' => $this->faker->phoneNumber,
             // 'photo' => $this->faker->imageUrl(100,100),
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
-            'password' => Hash::make('@12345678'),
+            'password' => Hash::make('12345678'),
             'remember_token' => Str::random(10),
         ];
     }

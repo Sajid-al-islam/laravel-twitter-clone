@@ -15,8 +15,8 @@ class CreateFollowersTable extends Migration
     {
         Schema::create('followers', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('follwer_id')->nullable();
-            $table->bigInteger('follwed_id')->nullable();
+            $table->bigInteger('follower_id')->nullable();
+            $table->bigInteger('followed_id')->nullable();
             $table->timestamps();
         });
     }

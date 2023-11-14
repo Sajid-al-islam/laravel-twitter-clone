@@ -43,15 +43,19 @@ Route::group(
 
             Route::group(['prefix' => 'user'], function () {
                 Route::post('/update-profile', 'Auth\ProfileController@update_profile');
+                Route::get('/{id}','Auth\UserController@show');
+                Route::post('/store','Auth\UserController@store');
+                Route::post('/update','Auth\UserController@update');
+            });
+
+            Route::group(['prefix' => 'tweet'], function () {
                 Route::get('/all','Auth\UserController@all');
                 Route::get('/{id}','Auth\UserController@show');
                 Route::post('/store','Auth\UserController@store');
-                Route::post('/canvas-store','Auth\UserController@canvas_store');
                 Route::post('/update','Auth\UserController@update');
                 Route::post('/soft-delete','Auth\UserController@soft_delete');
                 Route::post('/destroy','Auth\UserController@destroy');
                 Route::post('/restore','Auth\UserController@restore');
-                Route::post('/bulk-import','Auth\UserController@bulk_import');
             });
 
         });

@@ -16,9 +16,10 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
+            FollowerSeeder::class,
+            LikeSeeder::class,
+            TweetSeeder::class,
             UserSeeder::class,
-            ExtraUserSeeder::class,
-            ContactMessageSeeder::class,
         ]);
 
 
