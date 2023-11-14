@@ -78,7 +78,7 @@ class ApiLoginController extends Controller
 
                 if (env('EMAIL_VERIFICATION') == false) {
                     auth()->login($check_auth_user, $request->remember);
-                    $user = User::where('id', Auth::user()->id)->with('roles')->first();
+                    $user = User::where('id', Auth::user()->id)->first();
                     $data['access_token'] = $user->createToken('accessToken')->accessToken;
                     $data['user'] = $user;
                     return response()->json($data, 200);
@@ -184,7 +184,7 @@ class ApiLoginController extends Controller
         } else {
             if ($verification['code'] == request()->code) {
                 auth()->login($verification['user']);
-                $user = User::where('id', Auth::user()->id)->with('roles')->first();
+                $user = User::where('id', Auth::user()->id)->first();
                 $data['access_token'] = $user->createToken('accessToken')->accessToken;
                 $data['user'] = $user;
 
@@ -225,13 +225,7 @@ class ApiLoginController extends Controller
             'user_name' => ['required', 'min:4', 'unique:users'],
             'email' => ['required', 'unique:users'],
             'password' => ['required', 'min:8', 'confirmed'],
-            // 'image' => ['required'],
             'mobile_number' => ['required'],
-            // 'dob' => ['required'],
-            // 'street' => ['required'],
-            // 'city' => ['required'],
-            // 'zip_code' => ['required'],
-            // 'country' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -241,7 +235,6 @@ class ApiLoginController extends Controller
             ], 422);
         } else {
             $data = $request->except(['password', 'password_confirmation', 'image']);
-            $data['role_id'] = 4;
             $data['password'] = Hash::make($request->password);
             $user = User::create($data);
             if ($request->hasFile('photo')) {
@@ -254,7 +247,7 @@ class ApiLoginController extends Controller
             $user->save();
 
             Auth::login($user);
-            $user = User::where('id', Auth::user()->id)->with('roles')->first();
+            $user = User::where('id', Auth::user()->id)->first();
             $user->access_token = $user->createToken('accessToken')->accessToken;
             return response()->json($user, 200);
         }
@@ -278,14 +271,9 @@ class ApiLoginController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => ['required'],
             'last_name' => ['required'],
-            // 'user_name' => ['required', 'min:4', 'unique:users'],
-            // 'email' => ['required', 'unique:users'],
-            'contact_number' => ['required'],
-            // 'dob' => ['required'],
-            // 'street' => ['required'],
-            'city' => ['required'],
-            'zip_code' => ['required'],
-            'country' => ['required'],
+            'user_name' => ['required', 'min:4', 'unique:users'],
+            'email' => ['required', 'unique:users'],
+            'mobile_number' => ['required'],
             //
         ]);
 
@@ -314,7 +302,7 @@ class ApiLoginController extends Controller
         $data['password'] = Hash::make($request->password);
         $user = User::find(Auth::user()->id)->fill($data)->save();
 
-        $data['user'] = User::where('id', Auth::user()->id)->with('roles')->first();
+        $data['user'] = User::where('id', Auth::user()->id)->first();
         return response()->json($data, 200);
     }
 
@@ -385,18 +373,7 @@ class ApiLoginController extends Controller
             $auth_status = true;
             $auth_information = User::where('id',Auth::user()->id)
                 ->with([
-                    'roles'=>function($q){
-                        return $q->select([
-                            'name',
-                            'role_serial'
-                        ]);
-                    },
-                    'permissions'=>function($q){
-                        return $q->select([
-                            'title',
-                            'permission_serial'
-                        ]);
-                    },
+                    
                 ])
                 ->first();
         }
