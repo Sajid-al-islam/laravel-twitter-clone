@@ -10,7 +10,7 @@ class TweetController extends Controller
     public function all()
     {
 
-        $tweets = Tweet::where('status', 'active')->with(['user'])->withCount('like')->paginate(10);
+        $tweets = Tweet::where('status', 'active')->with(['user'])->withCount('like')->latest()->paginate(10);
 
         return response()->json($tweets);
     }

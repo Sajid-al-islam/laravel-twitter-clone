@@ -39,6 +39,7 @@ Route::group(
                 Route::post('/user_update', 'Auth\ApiLoginController@user_update');
                 Route::post('/update_password', 'Auth\ApiLoginController@update_password');
                 Route::post('/find-user-info', 'Auth\ApiLoginController@find_user_info');
+                Route::get('/to-follow-users','Auth\UserController@to_follow_user');
             });
 
             Route::group(['prefix' => 'user'], function () {
@@ -46,6 +47,7 @@ Route::group(
                 Route::get('/{id}','Auth\UserController@show');
                 Route::post('/store','Auth\UserController@store');
                 Route::post('/update','Auth\UserController@update');
+                
             });
 
             Route::group(['prefix' => 'tweets'], function () {

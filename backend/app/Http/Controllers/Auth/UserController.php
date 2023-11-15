@@ -49,6 +49,12 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function to_follow_user() {
+
+        $users = User::select('*')->inRandomOrder()->limit(6)->get();
+        return response()->json($users);
+    }
+
     public function show($id)
     {
         $select = [
