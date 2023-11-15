@@ -30,7 +30,7 @@
                             </div>
                             <div class="bg-white rounded-4 shadow-sm profile">
                                 <div class="d-flex align-items-center px-3 pt-3">
-                                    <img src="img/rmate2.jpg" class="img-fluid rounded-circle" alt="profile-img" />
+                                    <img src="img/rmate4.jpg" class="img-fluid rounded-circle" alt="profile-img" />
                                     <div class="ms-3">
                                         <h6 class="mb-0 d-flex align-items-start text-body fs-6 fw-bold">
                                             {{ profile.first_name }} {{ profile.last_name }} <span
