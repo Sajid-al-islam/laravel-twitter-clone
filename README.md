@@ -92,6 +92,8 @@ NPM dependencies
 npm install
 ```
 
+#Add your api endpoint
+Go into main.js file and change api endpoint of your backend server
 Using webpack
 
 ```
