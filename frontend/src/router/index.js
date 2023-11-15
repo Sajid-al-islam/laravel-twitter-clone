@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/Tweet/HomeView.vue'
 import myProfile from '../views/Tweet/Profile.vue'
+import people from '../views/Tweet/Peoples.vue'
 import Layout from '../views/Tweet/Layout'
 import login from '../views/Login.vue'
 import register from '../views/Register.vue'
@@ -45,6 +46,11 @@ const routes = [
         path: '/profile',
         name: 'profile',
         component: myProfile
+      },
+      {
+        path: '/people',
+        name: 'people',
+        component: people
       },
     ]
   },

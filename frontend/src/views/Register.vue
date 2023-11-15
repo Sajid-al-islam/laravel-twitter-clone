@@ -5,49 +5,89 @@
                 <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
                     <div class="text-center my-5">
                         <img src="../assets/logo.svg" alt="logo" width="100">
-                        <h1 class="fs-4 card-title fw-bold mb-4 mt-4">Login to continue</h1>
+                        <h1 class="fs-4 card-title fw-bold mb-4 mt-4">Register to continue</h1>
                     </div>
                     <div class="card shadow-lg">
                         <div class="card-body p-5">
+                            <ul>
+                                <li v-if="errors.first_name">
+                                    <div class="text-danger fw-bold" v-for="(error, index) in errors.first_name" :key="index">
+                                        {{ error }}
+                                    </div>
+                                </li>
 
+                                <li v-if="errors.last_name">
+                                    <div class="text-danger fw-bold" v-for="(error, index) in errors.last_name" :key="index">
+                                        {{ error }}
+                                    </div>
+                                </li>
+
+                                <li v-if="errors.user_name">
+                                    <div class="text-danger fw-bold" v-for="(error, index) in errors.user_name" :key="index">
+                                        {{ error }}
+                                    </div>
+                                </li>
+
+                                <li v-if="errors.email">
+                                    <div class="text-danger fw-bold" v-for="(error, index) in errors.email" :key="index">
+                                        {{ error }}
+                                    </div>
+                                </li>
+
+                                <li v-if="errors.password">
+                                    <div class="text-danger fw-bold" v-for="(error, index) in errors.password" :key="index">
+                                        {{ error }}
+                                    </div>
+                                </li>
+
+                                <li v-if="errors.mobile_number">
+                                    <div class="text-danger fw-bold" v-for="(error, index) in errors.mobile_number" :key="index">
+                                        {{ error }}
+                                    </div>
+                                </li>
+                            </ul>
+                            
                             <form @submit.prevent="Register()" class="login-form">
                                 <div class="mb-3">
                                     <label for="inputname" class="sr-only">First name</label>
-                                    <input type="name" v-model="user.first_name" name="name" id="inputname" class="form-control mb-2"
-                                        placeholder="Your name" required autofocus />
+                                    <input type="name" v-model="user.first_name" name="name" id="inputname"
+                                        class="form-control mb-2" placeholder="first name" required autofocus />
                                 </div>
                                 <div class="mb-3">
                                     <label for="inputname" class="sr-only">Last name</label>
-                                    <input type="name" v-model="user.last_name" name="name" id="inputname" class="form-control mb-2"
-                                        placeholder="Your name" required autofocus />
+                                    <input type="name" v-model="user.last_name" name="name" id="inputname"
+                                        class="form-control mb-2" placeholder="last name" required autofocus />
                                 </div>
                                 <div class="mb-3">
                                     <label for="inputEmail" class="sr-only">Username</label>
-                                    <input type="text" v-model="user.user_name" name="user_name" id="inputEmail" class="form-control mb-2"
-                                        placeholder="user name, must be unique" required autofocus />
+                                    <input type="text" v-model="user.user_name" name="user_name" id="inputEmail"
+                                        class="form-control mb-2" placeholder="user name, must be unique" required
+                                        autofocus />
                                 </div>
                                 <div class="mb-3">
                                     <label for="mobile_number" class="sr-only">Mobile Number</label>
-                                    <input type="number" v-model="user.mobile_number"  name="mobile_number" id="mobile_number" class="form-control mb-2"
-                                        placeholder="01548484" required autofocus />
+                                    <input type="number" v-model="user.mobile_number" name="mobile_number"
+                                        id="mobile_number" class="form-control mb-2" placeholder="01548484" required
+                                        autofocus />
                                 </div>
                                 <div class="mb-3">
                                     <label for="inputEmail" class="sr-only">Email Address</label>
-                                    <input type="email" v-model="user.email" name="email" id="inputEmail" class="form-control mb-2"
-                                        placeholder="Email address" required autofocus />
+                                    <input type="email" v-model="user.email" name="email" id="inputEmail"
+                                        class="form-control mb-2" placeholder="Email address" required autofocus />
                                 </div>
                                 <div class="mt-1 mb-3">
                                     <label for="inputPassword" class="sr-only">Password</label>
-                                    <input type="password" v-model="user.password" name="password" id="password" class="form-control mb-2"
-                                        placeholder="Password" required />
+                                    <input type="password" v-model="user.password" name="password" id="password"
+                                        class="form-control mb-2" placeholder="Password" required />
                                 </div>
 
                                 <div class="mt-1 mb-3">
                                     <label for="inputPassword" class="sr-only">Confirm Password</label>
-                                    <input type="password" v-model="user.password_confirmation" name="password_confirmation" id="password_confirmation" class="form-control mb-2"
-                                        placeholder="confirm passowrd" required />
+                                    <input type="password" v-model="user.password_confirmation" name="password_confirmation"
+                                        id="password_confirmation" class="form-control mb-2" placeholder="confirm passowrd"
+                                        required />
                                 </div>
-                                
+
                                 <div class="mt-3 d-grid gap-2">
                                     <button class="btn btn-lg btn-primary" type="submit">
                                         Register
@@ -90,7 +130,8 @@ export default {
                 password: '',
                 user_name: '',
                 password: ''
-            }
+            },
+            errors: []
         }
     },
     methods: {
@@ -115,12 +156,16 @@ export default {
                         // this.$router.replace({ name: 'Dashboard' })
                     }
                 })
-                .catch((e) => {
-                    if (e.response.status == 401) {
-                        console.log(e.response.data);
-                        this.error.email = e.response.data.message;
-                    }
-                });
+                    .catch((e) => {
+                        if (e.response.status == 401) {
+                            console.log(e.response.data);
+                            this.error.email = e.response.data.message;
+                        }
+                        if (e.response.status == 422) {
+                            console.log(e.response.data);
+                            this.errors = e.response.data.data;
+                        }
+                    });
             }
         },
         checkToken() {
@@ -141,5 +186,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

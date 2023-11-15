@@ -250,7 +250,9 @@ class ApiLoginController extends Controller
             Auth::login($user);
             $user = User::where('id', Auth::user()->id)->first();
             $user->access_token = $user->createToken('accessToken')->accessToken;
-            return response()->json($user, 200);
+            $data['access_token'] = $user->createToken('accessToken')->accessToken;
+            $data['user'] = $user;
+            return response()->json($data, 200);
         }
     }
 

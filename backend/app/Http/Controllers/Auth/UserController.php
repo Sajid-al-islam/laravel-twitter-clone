@@ -51,7 +51,19 @@ class UserController extends Controller
 
     public function to_follow_user() {
 
-        $users = User::select('*')->inRandomOrder()->limit(6)->get();
+        $query = User::select('*');
+        if (request()->has('search_key')) {
+            $key = request()->search_key;
+            $query->where(function ($q) use ($key) {
+                return $q->where('first_name', $key)
+                    ->orWhere('last_name', $key)
+                    ->orWhere('user_name', $key)
+                    ->orWhere('first_name', 'LIKE', '%' . $key . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . $key . '%')
+                    ->orWhere('user_name', 'LIKE', '%' . $key . '%');
+            });
+        }
+        $users = $query->latest()->get();
         return response()->json($users);
     }
 

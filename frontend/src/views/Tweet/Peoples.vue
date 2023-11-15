@@ -10,7 +10,7 @@
         </div> -->
         <div class="web-none d-flex align-items-center px-3 pt-3">
             <a href="/" class="text-decoration-none">
-                <img src="img/logo.png" class="img-fluid logo-mobile" alt="brand-logo">
+                <img src="../../assets/logo.svg" class="img-fluid logo-mobile" alt="brand-logo">
             </a>
             <button class="ms-auto btn btn-primary ln-0" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
@@ -25,101 +25,59 @@
                             <ul class="top-osahan-nav-tab nav nav-pills justify-content-center nav-justified mb-4 shadow-sm rounded-4 overflow-hidden bg-white sticky-sidebar2"
                                 id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="p-3 nav-link text-muted active" id="pills-feed-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed"
-                                        aria-selected="true">Feed</button>
+                                    <router-link :to="{ name: 'home' }" class="p-3 nav-link text-muted" id="pills-people-tab" aria-controls="pills-people"
+                                        aria-selected="false">Feed</router-link>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="p-3 nav-link text-muted" id="pills-people-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-people" type="button" role="tab" aria-controls="pills-people"
-                                        aria-selected="false">People</button>
+                                    <router-link :to="{ name: 'people' }" class="p-3 nav-link text-muted" id="pills-people-tab" aria-controls="pills-people"
+                                        aria-selected="false">People</router-link>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-feed" role="tabpanel"
                                     aria-labelledby="pills-feed-tab">
                                     <div class="tweet_post">
-                                        <form>
+                                        <form @submit.prevent="TweetSubmit($event)" id="tweet_post_form" method="POST">
                                             <div class="mb-3">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1"
-                                                    rows="3" placeholder="What's Happening!"></textarea>
+                                                <textarea v-model="content" class="form-control" name="content"
+                                                    id="exampleFormControlTextarea1" rows="3"
+                                                    placeholder="What's Happening!"></textarea>
                                             </div>
-                                            <button type="submit" class="btn btn-primary d-flex justify-content-end">Post</button>
+                                            <div class="text-danger d-flex align-items-center" v-if="error" role="alert">
+                                                {{ error }}
+                                            </div>
+                                            <button type="submit"
+                                                class="btn btn-primary d-flex justify-content-end">Post</button>
                                         </form>
                                     </div>
 
                                     <div>
                                         <div class="pt-4 feeds">
 
-                                            <div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm"
-                                                v-for="(tweet, index) in tweets.data" :key="index">
-                                                <div class="d-flex">
-                                                    <img src="img/rmate4.jpg" class="img-fluid rounded-circle user-img"
-                                                        alt="profile-img">
-                                                    <div class="d-flex ms-3 align-items-start w-100">
-                                                        <div class="w-100">
-                                                            <div class="d-flex align-items-center justify-content-between">
-                                                                <a v-if="tweet.user" href="profile.html"
-                                                                    class="text-decoration-none d-flex align-items-center">
-                                                                    <h6 class="fw-bold mb-0 text-body">{{
-                                                                        tweet.user.first_name }} {{ tweet.user.last_name }}
-                                                                    </h6>
+                                            <div class="bg-white rounded-4 overflow-hidden shadow-sm account-follow mb-4">
+                                                <h6 class="fw-bold text-body p-3 mb-0 border-bottom">All x users</h6>
+                                                <div class="mt-2 mx-2 input-group mb-4 shadow-sm rounded-4 overflow-hidden py-2 bg-white">
+                                                    <span
+                                                        class="input-group-text material-icons border-0 bg-white text-primary">search</span>
+                                                    <input @keyup="search($event)" type="text" class="form-control border-0 fw-light ps-1"
+                                                        placeholder="Search tweet">
+                                                </div>
+                                                <div v-for="(follower, index) in users" :key="index"
+                                                    class="p-3 border-bottom d-flex text-dark text-decoration-none account-item">
+                                                    <a href="#">
+                                                        <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3"
+                                                            alt="profile-img">
+                                                    </a>
+                                                    <div>
 
-                                                                    <span
-                                                                        class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span>
-                                                                    <small class="text-muted ms-2">@{{ tweet.user.user_name
-                                                                    }}</small>
-                                                                </a>
-                                                                <div class="d-flex align-items-center small">
-                                                                    <p class="text-muted mb-0">19 Feb</p>
-                                                                    <div class="dropdown">
-                                                                        <a href="#"
-                                                                            class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1"
-                                                                            id="dropdownMenuButton2"
-                                                                            data-bs-toggle="dropdown"
-                                                                            aria-expanded="false">more_vert</a>
-                                                                        <ul class="dropdown-menu fs-13 dropdown-menu-end"
-                                                                            aria-labelledby="dropdownMenuButton2">
-                                                                            <li><a class="dropdown-item text-muted"
-                                                                                    href="#"><span
-                                                                                        class="material-icons md-13 me-1">edit</span>Edit</a>
-                                                                            </li>
-                                                                            <li><a class="dropdown-item text-muted"
-                                                                                    href="#"><span
-                                                                                        class="material-icons md-13 me-1">delete</span>Delete</a>
-                                                                            </li>
-                                                                            <li><a class="dropdown-item text-muted"
-                                                                                    href="#"><span
-                                                                                        class="material-icons md-13 me-1 ltsp-n5">arrow_back_ios
-                                                                                        arrow_forward_ios</span>Embed
-                                                                                    Vogel</a></li>
-                                                                            <li><a class="dropdown-item text-muted d-flex align-items-center"
-                                                                                    href="#"><span
-                                                                                        class="material-icons md-13 me-1">share</span>Share
-                                                                                    via another apps</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
+                                                        <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ follower.first_name }} {{ follower.last_name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
+                                                            <div class="text-muted fw-light">
+                                                                <p class="mb-1 small">@{{ follower.user_name }}</p>
+                                                                <!-- <span class="text-muted d-flex align-items-center small"><span class="material-icons me-1 small">open_in_new</span>Promoted</span> -->
                                                             </div>
-                                                            <div class="my-2">
-                                                                <p v-if="tweet.content != null">{{ tweet.content }}</p>
-                                                                <a href="#" class="text-decoration-none"
-                                                                    data-bs-toggle="modal" data-bs-target="#commentModal">
-                                                                    <img src="img/post2.png" class="img-fluid rounded mb-3"
-                                                                        alt="post-img">
-                                                                </a>
-                                                                <div
-                                                                    class="d-flex align-items-center justify-content-between mb-2">
-                                                                    <div>
-                                                                        <a href="#"
-                                                                            class="text-muted text-decoration-none d-flex align-items-start fw-light"><span
-                                                                                class="material-icons md-20 me-2">thumb_up_off_alt</span><span>{{
-                                                                                    tweet.like_count }}</span></a>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
+                                                    </div>
+                                                    <div class="ms-auto">
+                                                        <span @click="toggleFollow(follower.id)" class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -142,15 +100,31 @@
                         <div class="fix-sidebar">
                             <div class="side-trend lg-none">
                                 <div class="sticky-sidebar2 mb-3">
-                                    <div class="input-group mb-4 shadow-sm rounded-4 overflow-hidden py-2 bg-white">
-                                        <span
-                                            class="input-group-text material-icons border-0 bg-white text-primary">search</span>
-                                        <input type="text" class="form-control border-0 fw-light ps-1"
-                                            placeholder="Search Vogel">
-                                    </div>
+                                    
 
                                     <!-- WhoToFollow -->
-                                    <WhoToFollow></WhoToFollow>
+                                    <div class="bg-white rounded-4 overflow-hidden shadow-sm account-follow mb-4">
+                                        <span v-if="profile.following.length > 0">
+                                            <h6 class="fw-bold text-body p-3 mb-0 border-bottom">My follow list</h6>
+                                            <a v-for="(following, index) in profile.following" :key="index" href="#" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
+                                                <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3" alt="profile-img" />
+                                                <div v-if="following.following">
+                                                    <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ following.following.first_name }} {{ following.following.last_name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
+                                                    <div class="text-muted fw-light">
+                                                        <p class="mb-1 small">@{{ following.following.user_name }}</p>
+                                                        <!-- <span class="text-muted d-flex align-items-center small"><span class="material-icons me-1 small">open_in_new</span>Promoted</span> -->
+                                                    </div>
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <span @click="toggleFollow(following.following.id)"  class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Unfollow</span>
+                                                </div>
+                                            </a>
+                                        </span>
+                                        <span v-else>
+                                            <h6 class="fw-bold text-body p-3 mb-0 border-bottom">No following yet</h6>
+                                        </span>
+                                    </div>
+                                    <!-- <WhoToFollow></WhoToFollow> -->
                                 </div>
                             </div>
                         </div>
@@ -165,7 +139,7 @@
                         <span class="me-3 small">©2023 <b class="text-primary">Your Website</b>. All rights
                             reserved</span>
                     </div>
-                    <!-- <div class="col-md-4 text-end">
+                    <div class="col-md-4 text-end">
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i
                                 class="icofont-facebook"></i></a>
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i
@@ -176,7 +150,7 @@
                                 class="icofont-youtube-play"></i></a>
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i
                                 class="icofont-instagram"></i></a>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,30 +162,89 @@
 // @ is an alias to /src
 import WhoToFollow from "@/components/WhoToFollow.vue";
 import LeftSideBar from "@/components/LeftSideBar.vue";
+import { RouterLink } from "vue-router";
 
 export default {
     name: "HomeView",
     components: {
-        WhoToFollow,
-        LeftSideBar
-    },
+    WhoToFollow,
+    LeftSideBar,
+    RouterLink
+},
     data: function () {
         return {
             tweets: {},
+            content: '',
+            auth_user: '',
+            error: '',
+            users: '',
+            profile: ''
         };
     },
-    created: function () {
-        this.getData();
+    created: async function () {
+
+        await this.getUserdata();
+        await this.getData();
+        let auth_user = localStorage.getItem('user_info');
+        this.auth_user = JSON.parse(auth_user);
     },
     methods: {
-        getData: function () {
-            let url = `/tweets/list`;
-            window.axios.get(url).then((res) => {
-                console.log(res.data);
-                this.tweets = res.data;
+        getData: async function () {
+            
+            await axios.get('/user/to-follow-users').then((res) => {
+                this.users = res.data;
             });
         },
-        
+        search: async function(event) {
+            let query = event.target.value;
+            await axios.get('/user/to-follow-users?search_key='+query).then((res) => {
+                this.users = res.data;
+            });
+        },
+        TweetSubmit: async function (event) {
+            if (this.content == "") {
+                this.error = 'tweet content is required.';
+                return 0;
+            }
+            let submit_data = {
+                content: this.content,
+                user_id: this.auth_user.id
+            }
+
+            axios.post('/tweets/store', submit_data).then((response) => {
+                if (response.data) {
+                    this.getData();
+                    location.href  = "/";
+                }
+                this.content = '';
+            })
+                .catch((e) => {
+                    if (e.response.status == 401) {
+                        console.log(e.response.data);
+                    }
+                    console.log(e.response);
+                });
+            // event.reset();
+        },
+        getUserdata: async function () {
+            let url = `/user/my-profile`;
+            window.axios.get(url).then((res) => {
+                console.log(res.data);
+                this.profile = res.data;
+            });
+        },
+        toggleFollow: async function(user) {
+            let data = {
+                followd_id: user,
+                follower_id: this.auth_user.id
+            }
+            
+
+            await axios.post('/follower/follow', data).then((res) => {
+                this.getUserdata();
+            });
+            
+        },
     },
 
 };

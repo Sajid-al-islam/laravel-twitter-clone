@@ -23,8 +23,8 @@
                         <div class="main-content">
                             <div class="mb-4 d-flex align-items-center">
                                 <div class="d-flex align-items-center">
-                                    <a href="index.html" class="material-icons text-dark text-decoration-none m-none me-3">arrow_back</a>
-                                    <p class="ms-2 mb-0 fw-bold text-body fs-6">Shay Jordon</p>
+                                    <a href="/" class="material-icons text-dark text-decoration-none m-none me-3">arrow_back</a>
+                                    <!-- <p class="ms-2 mb-0 fw-bold text-body fs-6">Shay Jordon</p> -->
                                 </div>
                                 <a href="#" class="text-decoration-none material-icons md-20 ms-auto text-muted">share</a>
                             </div>
@@ -62,29 +62,10 @@
                                         <div>
                                             <p class="mb-0" v-if="profile.followers">{{ profile.followers.length }} <span class="text-muted">Followers</span>
                                             </p>
-                                            <!-- <div class="d-flex">
-                                                <img src="img/rmate1.jpg" class="img-fluid rounded-circle"
-                                                    alt="follower-img" />
-                                                <img src="img/rmate2.jpg" class="img-fluid rounded-circle"
-                                                    alt="follower-img" />
-                                                <img src="img/rmate3.jpg" class="img-fluid rounded-circle"
-                                                    alt="follower-img" />
-                                                <img src="img/rmate4.jpg" class="img-fluid rounded-circle"
-                                                    alt="follower-img" />
-                                                <img src="img/rmate5.jpg" class="img-fluid rounded-circle"
-                                                    alt="follower-img" />
-                                            </div> -->
                                         </div>
                                         <div class="ms-5 ps-5">
                                             <p class="mb-0" v-if="profile.following">{{ profile.following.length }} <span class="text-muted">Following</span></p>
-                                            <!-- <div class="d-flex">
-                                                <img src="img/rmate1.jpg" class="img-fluid rounded-circle"
-                                                    alt="follower-img" />
-                                                <img src="img/rmate2.jpg" class="img-fluid rounded-circle"
-                                                    alt="follower-img" />
-                                                <img src="img/rmate3.jpg" class="img-fluid rounded-circle"
-                                                    alt="follower-img" />
-                                            </div> -->
+
                                         </div>
                                     </div>
                                 </div>
@@ -223,15 +204,30 @@
                         <div class="fix-sidebar">
                             <div class="side-trend lg-none">
                                 <div class="sticky-sidebar2 mb-3">
-                                    <div class="input-group mb-4 shadow-sm rounded-4 overflow-hidden py-2 bg-white">
-                                        <span
-                                            class="input-group-text material-icons border-0 bg-white text-primary">search</span>
-                                        <input type="text" class="form-control border-0 fw-light ps-1"
-                                            placeholder="Search Vogel">
-                                    </div>
+                                    
 
                                     <!-- WhoToFollow -->
-                                    <WhoToFollow></WhoToFollow>
+                                    <div class="bg-white rounded-4 overflow-hidden shadow-sm account-follow mb-4">
+                                        <span v-if="profile.following.length > 0">
+                                            <h6 class="fw-bold text-body p-3 mb-0 border-bottom">My follow list</h6>
+                                            <a v-for="(following, index) in profile.following" :key="index" href="#" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
+                                                <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3" alt="profile-img" />
+                                                <div v-if="following.following">
+                                                    <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ following.following.first_name }} {{ following.following.last_name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
+                                                    <div class="text-muted fw-light">
+                                                        <p class="mb-1 small">@{{ following.following.user_name }}</p>
+                                                        <!-- <span class="text-muted d-flex align-items-center small"><span class="material-icons me-1 small">open_in_new</span>Promoted</span> -->
+                                                    </div>
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <span @click="toggleFollow(following.following.id)"  class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Unfollow</span>
+                                                </div>
+                                            </a>
+                                        </span>
+                                        <span v-else>
+                                            <h6 class="fw-bold text-body p-3 mb-0 border-bottom">No following yet</h6>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -243,15 +239,15 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-8">
-                        <span class="me-3 small">©2023 <b class="text-primary">Your Website</b>. All rights reserved</span>
+                        <span class="me-3 small">©2023 <b class="text-primary">Twitter</b>. All rights reserved</span>
                     </div>
-                    <div class="col-md-4 text-end">
+                    <!-- <div class="col-md-4 text-end">
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i class="icofont-facebook"></i></a>
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i class="icofont-twitter"></i></a>
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i class="icofont-linkedin"></i></a>
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i class="icofont-youtube-play"></i></a>
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i class="icofont-instagram"></i></a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -301,6 +297,22 @@ export default {
                 this.getMyData();
             });
             
+        },
+        deleteTweet: async function (tweet_id) {
+            let data = {
+                id: tweet_id,
+            }
+            axios.post('/tweets/destroy', data).then((response) => {
+                if (response.data) {
+                    this.getMyData();
+                }
+            })
+            .catch((e) => {
+                // if (e.response.status == 401) {
+                //     console.log(e.response.data);
+                // }
+                console.log(e.response);
+            });
         },
     },
 
