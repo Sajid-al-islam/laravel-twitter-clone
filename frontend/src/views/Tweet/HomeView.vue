@@ -45,8 +45,7 @@
                                                     id="exampleFormControlTextarea1" rows="3"
                                                     placeholder="What's Happening!"></textarea>
                                             </div>
-                                            <div class="text-danger d-flex align-items-center" v-if="error"
-                                                role="alert">
+                                            <div class="text-danger d-flex align-items-center" v-if="error" role="alert">
                                                 {{ error }}
                                             </div>
                                             <button type="submit"
@@ -91,7 +90,8 @@
                                                                                     href="#"><span
                                                                                         class="material-icons md-13 me-1">edit</span>Edit</a>
                                                                             </li>
-                                                                            <li><a @click="deleteTweet(tweet.id)" class="dropdown-item text-muted"
+                                                                            <li><a @click="deleteTweet(tweet.id)"
+                                                                                    class="dropdown-item text-muted"
                                                                                     href="#"><span
                                                                                         class="material-icons md-13 me-1">delete</span>Delete</a>
                                                                             </li>
@@ -100,7 +100,9 @@
                                                                 </div>
                                                             </div>
                                                             <div class="my-2">
-                                                                <p v-if="tweet.content != null" class="d-flex justify-content-start">{{ tweet.content }}</p>
+                                                                <p v-if="tweet.content != null"
+                                                                    class="d-flex justify-content-start">{{ tweet.content }}
+                                                                </p>
                                                                 <a href="#" class="text-decoration-none"
                                                                     data-bs-toggle="modal" data-bs-target="#commentModal">
                                                                     <!-- <img src="img/post2.png" class="img-fluid rounded mb-3"
@@ -109,7 +111,8 @@
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-between mb-2">
                                                                     <div>
-                                                                        <a href="#" @click.prevent="like_post(tweet.id)" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span
+                                                                        <a href="#" @click.prevent="like_post(tweet.id)"
+                                                                            class="text-muted text-decoration-none d-flex align-items-start fw-light"><span
                                                                                 class="material-icons md-20 me-2">thumb_up_off_alt</span><span>{{
                                                                                     tweet.like_count }}</span></a>
                                                                     </div>
@@ -147,7 +150,28 @@
                                     </div>
 
                                     <!-- WhoToFollow -->
-                                    <WhoToFollow></WhoToFollow>
+                                    <div class="bg-white rounded-4 overflow-hidden shadow-sm account-follow mb-4">
+                                        <h6 class="fw-bold text-body p-3 mb-0 border-bottom">My followers</h6>
+                                        <div v-for="(follower, index) in profile.followers" :key="index"
+                                            class="p-3 border-bottom d-flex text-dark text-decoration-none account-item">
+                                            <a v-if="follower.follower" href="#">
+                                                <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3"
+                                                    alt="profile-img">
+                                            </a>
+                                            <div>
+
+                                                <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ follower.follower.first_name }} {{ follower.follower.last_name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
+                                                    <div class="text-muted fw-light">
+                                                        <p class="mb-1 small">@{{ follower.follower.user_name }}</p>
+                                                        <!-- <span class="text-muted d-flex align-items-center small"><span class="material-icons me-1 small">open_in_new</span>Promoted</span> -->
+                                                    </div>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <span @click="toggleFollow(follower.follower.id)" class="btn btn-outline-primary btn-sm px-3 rounded-pill">+ Follow</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <WhoToFollow></WhoToFollow> -->
                                 </div>
                             </div>
                         </div>
@@ -197,11 +221,14 @@ export default {
             tweets: {},
             content: '',
             auth_user: '',
-            error: ''
+            error: '',
+            profile: ''
         };
     },
-    created: function () {
-        this.getData();
+    created: async function () {
+
+        await this.getData();
+        await this.getUserdata();
         let auth_user = localStorage.getItem('user_info');
         this.auth_user = JSON.parse(auth_user);
     },
@@ -213,7 +240,7 @@ export default {
                 this.tweets = res.data;
             });
         },
-        deleteTweet: async function(tweet_id) {
+        deleteTweet: async function (tweet_id) {
             let data = {
                 id: tweet_id,
             }
@@ -222,14 +249,14 @@ export default {
                     this.getData();
                 }
             })
-            .catch((e) => {
-                if (e.response.status == 401) {
-                    console.log(e.response.data);
-                }
-                console.log(e.response);
-            });
+                .catch((e) => {
+                    if (e.response.status == 401) {
+                        console.log(e.response.data);
+                    }
+                    console.log(e.response);
+                });
         },
-        like_post: async function(tweet_id) {
+        like_post: async function (tweet_id) {
             let data = {
                 tweet_id: tweet_id,
                 user_id: this.auth_user.id
@@ -239,12 +266,12 @@ export default {
                     this.getData();
                 }
             })
-            .catch((e) => {
-                if (e.response.status == 401) {
-                    console.log(e.response.data);
-                }
-                console.log(e.response);
-            });
+                .catch((e) => {
+                    if (e.response.status == 401) {
+                        console.log(e.response.data);
+                    }
+                    console.log(e.response);
+                });
         },
         TweetSubmit: async function (event) {
             if (this.content == "") {
@@ -269,7 +296,26 @@ export default {
                     console.log(e.response);
                 });
             // event.reset();
-        }
+        },
+        getUserdata: async function () {
+            let url = `/user/my-profile`;
+            window.axios.get(url).then((res) => {
+                console.log(res.data);
+                this.profile = res.data;
+            });
+        },
+        toggleFollow: async function(user) {
+            let data = {
+                followd_id: user,
+                follower_id: this.auth_user.id
+            }
+            
+
+            await axios.post('/follower/follow', data).then((res) => {
+                this.getUserdata();
+            });
+            
+        },
     },
 
 };
