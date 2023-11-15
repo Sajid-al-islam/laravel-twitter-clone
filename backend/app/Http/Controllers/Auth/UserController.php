@@ -405,65 +405,18 @@ class UserController extends Controller
     {
     }
 
-    public function restore()
-    {
-        $validator = Validator::make(request()->all(), [
-            'id' => ['required', 'exists:users,id'],
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'err_message' => 'validation error',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
 
-        $user = User::find(request()->id);
-        $user->status = 1;
-        $user->save();
+    public function myProfile() {
 
-        return response()->json([
-            'result' => 'activated',
-        ], 200);
-    }
+        $profile_details = User::where('id', auth()->user()->id)->with(['tweets' => function ($q) {
+            $q->withCount('like');
+        }, 'followers' => function ($q2) {
+            $q2->with('follower');
+        }, 'following' => function($q3) {
+            $q3->with('following');
+        }])->first();
 
-    public function bulk_import()
-    {
-        $validator = Validator::make(request()->all(), [
-            'data' => ['required', 'array'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'err_message' => 'validation error',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        foreach (request()->data as $item) {
-            if (isset($item['photo_url']))
-                unset($item['photo_url']);
-
-            if (!isset($item['password']))
-                $item['password'] = Hash::make('12345678');
-
-            $item['created_at'] = $item['created_at'] ? Carbon::parse($item['created_at']) : Carbon::now()->toDateTimeString();
-            $item['updated_at'] = $item['updated_at'] ? Carbon::parse($item['updated_at']) : Carbon::now()->toDateTimeString();
-            $item = (object) $item;
-
-            $check = User::where('id', $item->id)->first();
-            if (!$check) {
-                try {
-                    User::create((array) $item);
-                } catch (\Throwable $th) {
-                    return response()->json([
-                        'err_message' => 'validation error',
-                        'errors' => $th->getMessage(),
-                    ], 400);
-                }
-            }
-        }
-
-        return response()->json('success', 200);
+        return response()->json($profile_details);
     }
 }

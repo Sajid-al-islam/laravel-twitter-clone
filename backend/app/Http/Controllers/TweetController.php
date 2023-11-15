@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
 use App\Models\Tweet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TweetController extends Controller
 {
@@ -29,10 +31,9 @@ class TweetController extends Controller
 
     public function store()
     {
+        // dd(request()->all());
         $validator = Validator::make(request()->all(), [
-            'title' => ['required', 'string'],
-            'paragraph' => ['required', 'string'],
-            'image' => ['required']
+            'content' => ['required', 'string'],
         ]);
 
         if ($validator->fails()) {
@@ -43,27 +44,53 @@ class TweetController extends Controller
         }
 
         $data = new Tweet();
-        $data->title = request()->title;
-        $data->title_highlight = request()->title_highlight;
-        $data->paragraph = request()->paragraph;
-        $data->link = request()->link;
+        $data->content = request()->content;
+        $data->user_id = request()->user_id;
         $data->save();
 
-        if (request()->hasFile('image')) {
-            $file = request()->file('image');
-            $path = 'uploads/site/Tweet-' . $data->id . rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
-            // Storage::put($path, $file);
-            Image::make($file)->resize(null, 600, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save(public_path($path));
-            $data->image = $path;
-            $data->save();
-        }
+        // if (request()->hasFile('image')) {
+        //     $file = request()->file('image');
+        //     $path = 'uploads/site/Tweet-' . $data->id . rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
+        //     // Storage::put($path, $file);
+        //     Image::make($file)->resize(null, 600, function ($constraint) {
+        //         $constraint->aspectRatio();
+        //     })->save(public_path($path));
+        //     $data->image = $path;
+        //     $data->save();
+        // }
 
         return response()->json($data, 200);
     }
 
-    
+    public function like_post()  {
+        $validator = Validator::make(request()->all(), [
+            'tweet_id' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'err_message' => 'validation error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $check_tweet = Like::where('tweet_id', request()->tweet_id)->where('user_id', request()->user_id)->first();
+        if($check_tweet != null) {
+            Like::where('tweet_id', request()->tweet_id)->where('user_id', request()->user_id)->delete();
+            return response()->json(["message" => "unliked"], 200);
+        }else {
+            $like = new Like();
+            $like->tweet_id = request()->tweet_id;
+            $like->user_id = request()->user_id;
+            $like->save();
+            return response()->json($like, 200);
+        }
+        
+    }
+
+    public function myProfile() {
+        
+    }
 
     public function update()
     {
@@ -119,7 +146,7 @@ class TweetController extends Controller
     public function destroy()
     {
         $validator = Validator::make(request()->all(), [
-            'id' => ['required','exists:news_events,id'],
+            'id' => ['required','exists:tweets,id'],
         ]);
 
         if ($validator->fails()) {

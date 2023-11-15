@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Mail\ForgetPasswordMail;
 use App\Mail\VerificationMail;
+use App\Models\Follower;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -417,5 +418,11 @@ class ApiLoginController extends Controller
     {
         $users = User::where('status', 'active')->get();
         return response()->json($users);
+    }
+
+    public function user_follower() {
+        $followers = Follower::where('follower_id', auth()->user()->id)->get();
+
+        return response()->json($followers);
     }
 }

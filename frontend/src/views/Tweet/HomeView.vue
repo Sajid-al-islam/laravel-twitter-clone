@@ -10,7 +10,7 @@
         </div> -->
         <div class="web-none d-flex align-items-center px-3 pt-3">
             <a href="/" class="text-decoration-none">
-                <img src="img/logo.png" class="img-fluid logo-mobile" alt="brand-logo">
+                <img src="../../assets/logo.svg" class="img-fluid logo-mobile" alt="brand-logo">
             </a>
             <button class="ms-auto btn btn-primary ln-0" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
@@ -39,12 +39,18 @@
                                 <div class="tab-pane fade show active" id="pills-feed" role="tabpanel"
                                     aria-labelledby="pills-feed-tab">
                                     <div class="tweet_post">
-                                        <form>
+                                        <form @submit.prevent="TweetSubmit($event)" id="tweet_post_form" method="POST">
                                             <div class="mb-3">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1"
-                                                    rows="3" placeholder="What's Happening!"></textarea>
+                                                <textarea v-model="content" class="form-control" name="content"
+                                                    id="exampleFormControlTextarea1" rows="3"
+                                                    placeholder="What's Happening!"></textarea>
                                             </div>
-                                            <button type="submit" class="btn btn-primary d-flex justify-content-end">Post</button>
+                                            <div class="text-danger d-flex align-items-center" v-if="error"
+                                                role="alert">
+                                                {{ error }}
+                                            </div>
+                                            <button type="submit"
+                                                class="btn btn-primary d-flex justify-content-end">Post</button>
                                         </form>
                                     </div>
 
@@ -71,7 +77,8 @@
                                                                     }}</small>
                                                                 </a>
                                                                 <div class="d-flex align-items-center small">
-                                                                    <p class="text-muted mb-0">19 Feb</p>
+                                                                    <p class="text-muted mb-0">{{ new
+                                                                        Date(tweet.created_at).toDateString() }}</p>
                                                                     <div class="dropdown">
                                                                         <a href="#"
                                                                             class="text-muted text-decoration-none material-icons ms-2 md-20 rounded-circle bg-light p-1"
@@ -84,35 +91,25 @@
                                                                                     href="#"><span
                                                                                         class="material-icons md-13 me-1">edit</span>Edit</a>
                                                                             </li>
-                                                                            <li><a class="dropdown-item text-muted"
+                                                                            <li><a @click="deleteTweet(tweet.id)" class="dropdown-item text-muted"
                                                                                     href="#"><span
                                                                                         class="material-icons md-13 me-1">delete</span>Delete</a>
                                                                             </li>
-                                                                            <li><a class="dropdown-item text-muted"
-                                                                                    href="#"><span
-                                                                                        class="material-icons md-13 me-1 ltsp-n5">arrow_back_ios
-                                                                                        arrow_forward_ios</span>Embed
-                                                                                    Vogel</a></li>
-                                                                            <li><a class="dropdown-item text-muted d-flex align-items-center"
-                                                                                    href="#"><span
-                                                                                        class="material-icons md-13 me-1">share</span>Share
-                                                                                    via another apps</a></li>
                                                                         </ul>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="my-2">
-                                                                <p v-if="tweet.content != null">{{ tweet.content }}</p>
+                                                                <p v-if="tweet.content != null" class="d-flex justify-content-start">{{ tweet.content }}</p>
                                                                 <a href="#" class="text-decoration-none"
                                                                     data-bs-toggle="modal" data-bs-target="#commentModal">
-                                                                    <img src="img/post2.png" class="img-fluid rounded mb-3"
-                                                                        alt="post-img">
+                                                                    <!-- <img src="img/post2.png" class="img-fluid rounded mb-3"
+                                                                        alt="post-img"> -->
                                                                 </a>
                                                                 <div
                                                                     class="d-flex align-items-center justify-content-between mb-2">
                                                                     <div>
-                                                                        <a href="#"
-                                                                            class="text-muted text-decoration-none d-flex align-items-start fw-light"><span
+                                                                        <a href="#" @click.prevent="like_post(tweet.id)" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span
                                                                                 class="material-icons md-20 me-2">thumb_up_off_alt</span><span>{{
                                                                                     tweet.like_count }}</span></a>
                                                                     </div>
@@ -198,10 +195,15 @@ export default {
     data: function () {
         return {
             tweets: {},
+            content: '',
+            auth_user: '',
+            error: ''
         };
     },
     created: function () {
         this.getData();
+        let auth_user = localStorage.getItem('user_info');
+        this.auth_user = JSON.parse(auth_user);
     },
     methods: {
         getData: function () {
@@ -211,6 +213,63 @@ export default {
                 this.tweets = res.data;
             });
         },
+        deleteTweet: async function(tweet_id) {
+            let data = {
+                id: tweet_id,
+            }
+            axios.post('/tweets/destroy', data).then((response) => {
+                if (response.data) {
+                    this.getData();
+                }
+            })
+            .catch((e) => {
+                if (e.response.status == 401) {
+                    console.log(e.response.data);
+                }
+                console.log(e.response);
+            });
+        },
+        like_post: async function(tweet_id) {
+            let data = {
+                tweet_id: tweet_id,
+                user_id: this.auth_user.id
+            }
+            axios.post('/tweets/like-post', data).then((response) => {
+                if (response.data) {
+                    this.getData();
+                }
+            })
+            .catch((e) => {
+                if (e.response.status == 401) {
+                    console.log(e.response.data);
+                }
+                console.log(e.response);
+            });
+        },
+        TweetSubmit: async function (event) {
+            if (this.content == "") {
+                this.error = 'tweet content is required.';
+                return 0;
+            }
+            let data = {
+                content: this.content,
+                user_id: this.auth_user.id
+            }
+
+            axios.post('/tweets/store', data).then((response) => {
+                if (response.data) {
+                    this.getData();
+                }
+                this.content = '';
+            })
+                .catch((e) => {
+                    if (e.response.status == 401) {
+                        console.log(e.response.data);
+                    }
+                    console.log(e.response);
+                });
+            // event.reset();
+        }
     },
 
 };

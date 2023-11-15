@@ -165,7 +165,7 @@
                         <span class="me-3 small">©2023 <b class="text-primary">Your Website</b>. All rights
                             reserved</span>
                     </div>
-                    <div class="col-md-4 text-end">
+                    <!-- <div class="col-md-4 text-end">
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i
                                 class="icofont-facebook"></i></a>
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i
@@ -176,7 +176,7 @@
                                 class="icofont-youtube-play"></i></a>
                         <a target="_blank" href="#" class="btn social-btn btn-sm text-decoration-none"><i
                                 class="icofont-instagram"></i></a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -211,6 +211,7 @@ export default {
                 this.tweets = res.data;
             });
         },
+        
     },
 
 };

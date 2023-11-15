@@ -93,12 +93,12 @@ export default {
                         // this.$router.replace({ name: 'Dashboard' })
                     }
                 })
-                    .catch((e) => {
-                        if (e.response.status == 401) {
-                            console.log(e.response.data);
-                            this.error.email = e.response.data.message;
-                        }
-                    });
+                .catch((e) => {
+                    if (e.response.status == 401) {
+                        console.log(e.response.data);
+                        this.error.email = e.response.data.message;
+                    }
+                });
             }
         },
         checkToken() {
