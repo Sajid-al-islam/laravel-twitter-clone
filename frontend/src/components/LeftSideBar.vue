@@ -3,17 +3,17 @@
         <div class="p-2 bg-light offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample">
             <div class="sidebar-nav mb-3">
                 <div class="pb-4">
-                    <a href="index.html" class="text-decoration-none">
-                        <img src="img/logo.png" class="img-fluid logo" alt="brand-logo">
+                    <a href="/" class="text-decoration-none">
+                        <img src="../assets/logo.svg" class="img-fluid logo" alt="brand-logo">
                     </a>
                 </div>
                 <ul class="navbar-nav justify-content-end flex-grow-1">
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link active"><span class="material-icons me-3">house</span>
+                        <a href="/" class="nav-link active"><span class="material-icons me-3">house</span>
                             <span>Feed</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="profile.html" class="nav-link"><span class="material-icons me-3">account_circle</span>
+                        <a :to="{ name: `profile` }" class="nav-link"><span class="material-icons me-3">account_circle</span>
                             <span>Profile</span></a>
                     </li>
                     <li class="nav-item">
@@ -53,25 +53,25 @@
         <div class="ps-0 m-none fix-sidebar">
             <div class="sidebar-nav mb-3">
                 <div class="pb-4 mb-4">
-                    <a href="index.html" class="text-decoration-none">
-                        <img src="img/logo.png" class="img-fluid logo" alt="brand-logo">
+                    <a href="/" class="text-decoration-none">
+                        <img src="../assets/logo.svg" class="img-fluid logo" alt="brand-logo">
                     </a>
                 </div>
                 <ul class="navbar-nav justify-content-end flex-grow-1">
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link active"><span class="material-icons me-3">house</span>
-                            <span>Feed</span></a>
+                        <router-link :to="{ name: `home` }" href="#" class="nav-link"><span class="material-icons me-3">house</span>
+                            <span>Feed</span></router-link>
                     </li>
                     <li class="nav-item">
-                        <a href="profile.html" class="nav-link"><span class="material-icons me-3">account_circle</span>
-                            <span>Profile</span></a>
+                        <router-link :to="{ name: `profile` }" class="nav-link"><span class="material-icons me-3">account_circle</span>
+                            <span>Profile</span></router-link>
                     </li>
                     
                     <li class="nav-item">
                         <a href="index.html" class="nav-link"><span class="material-icons me-3">logout</span>
                             <span>Logout</span></a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <span class="material-icons me-3">web</span> Pages
@@ -83,7 +83,7 @@
                             <li><a class="dropdown-item rounded-3 px-2 py-1 my-1" href="edit-profile.html">Edit Profile</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
                     
                 </ul>
             </div>
