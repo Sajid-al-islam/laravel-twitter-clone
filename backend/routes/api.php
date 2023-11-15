@@ -48,8 +48,8 @@ Route::group(
                 Route::post('/update','Auth\UserController@update');
             });
 
-            Route::group(['prefix' => 'tweet'], function () {
-                Route::get('/all','TweetController@all');
+            Route::group(['prefix' => 'tweets'], function () {
+                Route::get('/list','TweetController@all');
                 Route::get('/{id}','Auth\UserController@show');
                 Route::post('/store','Auth\UserController@store');
                 Route::post('/update','Auth\UserController@update');
