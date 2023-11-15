@@ -17,7 +17,7 @@
                             <span>Profile</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link"><span class="material-icons me-3">logout</span>
+                        <a @click="logout()" href="#" class="nav-link"><span class="material-icons me-3">logout</span>
                             <span>Logout</span></a>
                     </li>
                 </ul>
@@ -43,7 +43,7 @@
                     </li>
                     
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link"><span class="material-icons me-3">logout</span>
+                        <a @click="logout()" class="nav-link"><span class="material-icons me-3">logout</span>
                             <span>Logout</span></a>
                     </li>
                     <!-- <li class="nav-item dropdown">
@@ -70,11 +70,45 @@
   
 <script>
 export default {
-    name: 'HelloWorld',
-    props: {
-        msg: String
-    }
-}
+    data: function () {
+        return {
+            users: {},
+            auth_user: {},
+            followd_users: []
+        };
+    },
+    created: async function () {
+        // await this.toFollowUser();
+        const response = await axios.get('/user/to-follow-users');
+        this.users = response.data
+
+        const followedResponse = await axios.get('/user/user-follower')
+        this.followedUsers = followedResponse.data
+
+        this.users.forEach(user => {
+            // user.isFollowing = this.followedUsers.some(followed => followed.id === user.id)
+            user.isFollowing = this.followedUsers.some(followed => followed.id === user.id);
+            console.log(user.isFollowing);
+        })
+
+        let auth_user = localStorage.getItem('user_info');
+        this.auth_user = JSON.parse(auth_user);
+    },
+    methods: {
+        
+        logout() {
+            axios.post('/user/api-logout', {
+            }).then((response) => {
+                localStorage.removeItem('token')
+                location.href ='/login'
+            })
+            .catch((e) => {
+                console.log(e.response);
+            });
+        },
+    },
+
+};
 </script>
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
