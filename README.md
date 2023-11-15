@@ -50,8 +50,6 @@ composer install
 
 Go into .env file and change Database and Email credentials.
 
-Go into .env file and change Database and Email credentials.
-
 ```
 php artisan migrate
 ```
@@ -70,6 +68,18 @@ Install passport
 php artisan passport:install
 ```
 
+#serving backend
+```
+php artisan serve
+```
+
+Change directory to frontend
+
+#Frontend setup
+
+```
+cd frontend
+```
 
 Install Nodejs
 
@@ -82,31 +92,16 @@ NPM dependencies
 npm install
 ```
 
-Using Laravel Mix 
+Using webpack
 
 ```
-npm run dev
+npm run serve
 ```
 
-## How to setting 
-
-Go into .env file and change Database and Email credentials.
-
+#serving forntend
 ```
-php artisan migrate
+npm run serve
 ```
-
-```
-php artisan db:seed --class=UserSeeder
-php artisan db:seed --class=UserRoleSeeder
-php artisan db:seed --class=DatabaseSeeder
-```
-	
-Generating a New Application Key
-```
-php artisan key:generate
-```
-
 
 ## License
 
