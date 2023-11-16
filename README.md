@@ -93,7 +93,12 @@ npm install
 ```
 
 #Add your api endpoint
+
 Go into main.js file and change api endpoint of your backend server.
+
+```
+window.axios.defaults.baseURL = "http://127.0.0.1:8000/api/v1"; //(here add your backend endpoint url)
+```
 
 
 #build and serve using webpack
