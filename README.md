@@ -93,10 +93,10 @@ npm install
 ```
 
 #Add your api endpoint
-Go into main.js file and change api endpoint of your backend server
+Go into main.js file and change api endpoint of your backend server.
 
 
-build and serve using webpack
+#build and serve using webpack
 
 ```
 npm run serve
