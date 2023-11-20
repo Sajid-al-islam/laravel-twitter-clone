@@ -9,6 +9,8 @@ This is a twitter clone I made mostly using Laravel ^8.3
 
 | [Features][] | [Requirements][] | [Install][] | [How to setting][] | [License][] |
 
+##secreencast link:
+https://drive.google.com/file/d/18BIr0QLQkgdv6AhMVXFNPe0J__6bu_xx/view?usp=sharing
 
 ## Features 
 - login, registration
@@ -93,8 +95,15 @@ npm install
 ```
 
 #Add your api endpoint
-Go into main.js file and change api endpoint of your backend server
-Using webpack
+
+Go into main.js file and change api endpoint of your backend server.
+
+```
+window.axios.defaults.baseURL = "http://127.0.0.1:8000/api/v1"; //(here add your backend endpoint url)
+```
+
+
+#build and serve using webpack
 
 ```
 npm run serve
