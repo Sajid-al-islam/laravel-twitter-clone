@@ -89,8 +89,6 @@ export default {
                         localStorage.setItem('token', response.data.access_token);
                         localStorage.setItem('user_info', JSON.stringify(response.data.user));
                         location.href = '/'
-
-                        // this.$router.replace({ name: 'Dashboard' })
                     }
                 })
                 .catch((e) => {
