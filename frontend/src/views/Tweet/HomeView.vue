@@ -74,8 +74,7 @@
 
                                                                     <span
                                                                         class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span>
-                                                                    <small class="text-muted ms-2">@{{ tweet.user.user_name
-                                                                    }}</small>
+                                                                    <small class="text-muted ms-2">@{{ tweet.user.user_name }}</small>
                                                                 </a>
                                                                 <div class="d-flex align-items-center small">
                                                                     <p class="text-muted mb-0">{{ new
@@ -115,9 +114,13 @@
                                                                     class="d-flex align-items-center justify-content-between mb-2">
                                                                     <div>
                                                                         <a href="#" @click.prevent="like_post(tweet.id)"
-                                                                            class="text-muted text-decoration-none d-flex align-items-start fw-light"><span
-                                                                                class="material-icons md-20 me-2">thumb_up_off_alt</span><span>{{
-                                                                                    tweet.like_count }}</span></a>
+                                                                            class="text-muted text-decoration-none d-flex align-items-start fw-light">
+                                                                            <span v-if="isLiked(tweet.id)" class="material-icons md-20 me-2">thumb_up_off_alt</span>
+                                                                            <span v-else class="material-icons md-20 me-2">thumb_up</span>
+                                                                            <span>
+                                                                                {{ tweet.like_count }}
+                                                                            </span>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
 
@@ -233,10 +236,13 @@ export default {
         this.auth_user = JSON.parse(auth_user);
     },
     methods: {
+        isLiked(tweetId) {
+            // Check if the tweet is in the user's likes list
+            return this.profile.likes.some(like => like.tweet_id === tweetId);
+        },
         getData: function () {
             let url = `/tweets/list`;
             window.axios.get(url).then((res) => {
-                console.log(res.data);
                 this.tweets = res.data;
             });
         },

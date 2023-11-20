@@ -51,7 +51,7 @@ class UserController extends Controller
 
     public function to_follow_user() {
 
-        $query = User::select('*');
+        $query = User::where('id', '!=', auth()->user()->id)->select('*');
         if (request()->has('search_key')) {
             $key = request()->search_key;
             $query->where(function ($q) use ($key) {
@@ -427,7 +427,7 @@ class UserController extends Controller
             $q2->with('follower');
         }, 'following' => function($q3) {
             $q3->with('following');
-        }])->first();
+        }, 'likes'])->first();
 
         return response()->json($profile_details);
     }
