@@ -58,12 +58,12 @@
                                             <div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm"
                                                 v-for="(tweet, index) in tweets" :key="index">
                                                 <div class="d-flex">
-                                                    <img src="img/rmate4.jpg" class="img-fluid rounded-circle user-img"
+                                                    <img :src="tweet.user.photo" class="img-fluid rounded-circle user-img"
                                                         alt="profile-img">
                                                     <div class="d-flex ms-3 align-items-start w-100">
                                                         <div class="w-100">
                                                             <div class="d-flex align-items-center justify-content-between">
-                                                                <a v-if="tweet.user" href="profile.html"
+                                                                <a v-if="tweet.user" href="#"
                                                                     class="text-decoration-none d-flex align-items-center">
                                                                     <h6 v-if="tweet.user_id == auth_user.id" class="fw-bold mb-0 text-body">
                                                                         {{ profile.first_name }} {{ profile.last_name }}
@@ -115,8 +115,8 @@
                                                                     <div>
                                                                         <a href="#" @click.prevent="like_post(tweet.id)"
                                                                             class="text-muted text-decoration-none d-flex align-items-start fw-light">
-                                                                            <span v-if="isLiked(tweet.id)" class="material-icons md-20 me-2">thumb_up_off_alt</span>
-                                                                            <span v-else class="material-icons md-20 me-2">thumb_up</span>
+                                                                            <span v-if="isLiked(tweet.id)" class="material-icons md-20 me-2">thumb_up</span>
+                                                                            <span v-else class="material-icons md-20 me-2">thumb_up_off_alt</span>
                                                                             <span>
                                                                                 {{ tweet.like_count }}
                                                                             </span>
@@ -155,7 +155,7 @@
                                         <span v-if="profile.following.length > 0">
                                             <h6 class="fw-bold text-body p-3 mb-0 border-bottom">My follow list</h6>
                                             <a v-for="(following, index) in profile.following" :key="index" href="#" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                                                <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3" alt="profile-img" />
+                                                <img :src="following.following.photo" class="img-fluid rounded-circle me-3" alt="profile-img" />
                                                 <div v-if="following.following">
                                                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ following.following.first_name }} {{ following.following.last_name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
                                                     <div class="text-muted fw-light">
@@ -269,6 +269,7 @@ export default {
             }
             axios.post('/tweets/like-post', data).then((response) => {
                 if (response.data) {
+                    this.getUserdata();
                     this.getData();
                 }
             })

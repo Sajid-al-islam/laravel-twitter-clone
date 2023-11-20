@@ -24,7 +24,7 @@ Route::get('/', function () {
 
 Route::get('/test', function () {
     // return view('test');
-    // dd(request()->getClientIp());
+    dd($_SERVER['HTTP_HOST']);
     $user = \App\Models\User::find(1);
     dd(
         $user->roles()->get()->toArray(),

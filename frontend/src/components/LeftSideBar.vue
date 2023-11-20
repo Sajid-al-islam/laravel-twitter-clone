@@ -62,8 +62,8 @@
                     
                 </ul>
             </div>
-            <a href="#" class="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
-                data-bs-toggle="modal" data-bs-target="#signModal">Post now +</a>
+            <a href="/#tweet_post_form" class="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
+                >Post now +</a>
         </div>
     </aside>
 </template>

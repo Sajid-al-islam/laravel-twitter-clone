@@ -30,7 +30,7 @@
                             </div>
                             <div class="bg-white rounded-4 shadow-sm profile">
                                 <div class="d-flex align-items-center px-3 pt-3">
-                                    <img src="img/rmate4.jpg" class="img-fluid rounded-circle" alt="profile-img" />
+                                    <img :src="profile.photo" class="img-fluid rounded-circle" alt="profile-img" />
                                     <div class="ms-3">
                                         <h6 class="mb-0 d-flex align-items-start text-body fs-6 fw-bold">
                                             {{ profile.first_name }} {{ profile.last_name }} <span
@@ -96,7 +96,7 @@
                                                 <div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm"
                                                     v-for="(tweet, index) in profile.tweets" :key="index">
                                                     <div class="d-flex">
-                                                        <img src="img/rmate4.jpg" class="img-fluid rounded-circle user-img"
+                                                        <img :src="profile.photo" class="img-fluid rounded-circle user-img"
                                                             alt="profile-img">
                                                         <div class="d-flex ms-3 align-items-start w-100">
                                                             <div class="w-100">
@@ -161,7 +161,7 @@
                                     <div class="feeds">
                                         <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
                                             <a v-for="(follower, index) in profile.followers" :key="index" href="#" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                                                <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3" alt="profile-img" />
+                                                <img :src="follower.follower.photo" class="img-fluid rounded-circle me-3" alt="profile-img" />
                                                 <div v-if="follower.follower">
                                                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ follower.follower.first_name }} {{ follower.follower.last_name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
                                                     <div class="text-muted fw-light">
@@ -181,7 +181,7 @@
                                     <div class="feeds">
                                         <div class="bg-white rounded-4 overflow-hidden mb-4 shadow-sm">
                                             <a v-for="(following, index) in profile.following" :key="index" href="#" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                                                <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3" alt="profile-img" />
+                                                <img :src="following.following.photo" class="img-fluid rounded-circle me-3" alt="profile-img" />
                                                 <div v-if="following.following">
                                                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ following.following.first_name }} {{ following.following.last_name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
                                                     <div class="text-muted fw-light">
@@ -211,7 +211,7 @@
                                         <span v-if="profile.following.length > 0">
                                             <h6 class="fw-bold text-body p-3 mb-0 border-bottom">My follow list</h6>
                                             <a v-for="(following, index) in profile.following" :key="index" href="#" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                                                <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3" alt="profile-img" />
+                                                <img :src="following.following.photo" class="img-fluid rounded-circle me-3" alt="profile-img" />
                                                 <div v-if="following.following">
                                                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{ following.following.first_name }} {{ following.following.last_name }} <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon">done</span></p>
                                                     <div class="text-muted fw-light">

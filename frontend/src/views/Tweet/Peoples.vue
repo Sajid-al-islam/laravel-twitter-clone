@@ -69,7 +69,7 @@
                                                 <div v-for="(follower, index) in users" :key="index"
                                                     class="p-3 border-bottom d-flex text-dark text-decoration-none account-item">
                                                     <a href="#">
-                                                        <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3"
+                                                        <img :src="follower.photo" class="img-fluid rounded-circle me-3"
                                                             alt="profile-img">
                                                     </a>
                                                     <div>
@@ -120,7 +120,7 @@
                                             <h6 class="fw-bold text-body p-3 mb-0 border-bottom">My follow list</h6>
                                             <a v-for="(following, index) in profile.following" :key="index" href="#"
                                                 class="p-3 border-bottom d-flex text-dark text-decoration-none account-item pf-item">
-                                                <img src="img/rmate5.jpg" class="img-fluid rounded-circle me-3"
+                                                <img :src="following.following.photo" class="img-fluid rounded-circle me-3"
                                                     alt="profile-img" />
                                                 <div v-if="following.following">
                                                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">{{

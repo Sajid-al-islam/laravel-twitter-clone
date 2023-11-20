@@ -244,6 +244,11 @@ class ApiLoginController extends Controller
                 Image::make($file)->fit(200, 200)->save(public_path($path));
                 $user->photo = $path;
             }
+
+            $url = 'https://api.coldeyefitness.com' . '/uploads/users/';
+            $pics = ['pic1.jpg', 'pic2.jpg', 'pic3.jpg', 'pic4.jpg', 'pic5.jpg', 'pic6.jpg'];
+
+            $user->photo = $url . $pics[array_rand($pics)];
             $user->slug = $user->name . $user->id . rand(1000, 9999);
             $user->save();
 
